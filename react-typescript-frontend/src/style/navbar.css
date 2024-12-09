@@ -1,0 +1,37 @@
+#lib-button {
+    background-color: unset;
+    border: none;
+}
+
+#nav-links {
+    display: flex;
+    gap: 1em;
+}
+
+#nav-links a {
+    text-decoration: none;
+}
+
+#login-btn {
+    padding: 1em !important;
+    background-color: dodgerblue !important;
+    border-radius: 1em !important;
+}
+
+#nav-links a:hover, #logout:hover {
+    text-decoration: none !important;
+    color: black !important;
+    cursor: pointer !important;
+    border-color: unset !important;
+    transition: none !important;
+}
+
+#lib-button:hover {
+    outline: none;
+    border: none unset;
+}
+
+#lib-button:active {
+    outline: none;
+    border: none unset;
+}
