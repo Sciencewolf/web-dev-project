@@ -52,26 +52,29 @@ function Navbar() {
                 {!['/login', '/signup'].includes(window.location.pathname) && (
                     <>
                         <div className={"d-flex justify-content-center align-items-center w-auto"} id={"nav-links"}>
-                            <button className={getCurrentPage === 'borrowed' ? "btn btn-secondary" : 'btn btn-text text-black'}
-                                    onClick={() => {
-                                        if (getCurrentPage !== 'borrowed') {
-                                            window.location.href = '/borrowed';
-                                        }
-                                    }}>Borrowed
+                            <button
+                                className={getCurrentPage === 'borrowed' ? "btn btn-secondary" : 'btn btn-text text-black'}
+                                onClick={() => {
+                                    if (getCurrentPage !== 'borrowed') {
+                                        window.location.href = '/borrowed';
+                                    }
+                                }}>Borrowed
                             </button>
-                            <button className={getCurrentPage === 'authors' ? "btn btn-secondary" : ' btn btn-text text-black'}
-                                    onClick={() => {
-                                        if (getCurrentPage !== 'authors') {
-                                            window.location.href = '/authors';
-                                        }
-                                    }}>Authors
+                            <button
+                                className={getCurrentPage === 'authors' ? "btn btn-secondary" : ' btn btn-text text-black'}
+                                onClick={() => {
+                                    if (getCurrentPage !== 'authors') {
+                                        window.location.href = '/authors';
+                                    }
+                                }}>Authors
                             </button>
-                            <button className={getCurrentPage === 'books' ? "btn btn-secondary" : 'btn btn-text text-black'}
-                                    onClick={() => {
-                                        if (getCurrentPage !== 'books') {
-                                            window.location.href = '/books';
-                                        }
-                                    }}>Books
+                            <button
+                                className={getCurrentPage === 'books' ? "btn btn-secondary" : 'btn btn-text text-black'}
+                                onClick={() => {
+                                    if (getCurrentPage !== 'books') {
+                                        window.location.href = '/books';
+                                    }
+                                }}>Books
                             </button>
 
                             {sessionStorage.getItem('loggedIn') === 'true' ? (

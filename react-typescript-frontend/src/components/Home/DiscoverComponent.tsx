@@ -11,8 +11,13 @@ function Discover() {
 
     useEffect(() => {
         getAllBooks(3)
-            .then(res => setBooks(res.data))
-            .catch(err => console.log(err));
+            .then(res => {
+                setBooks(res.data)
+                console.log(res)
+            })
+            .catch(err => {
+                console.log('err', err)
+            });
     }, []);
 
     return (

@@ -13,20 +13,7 @@ function Login() {
     document.querySelector('title')!.innerText = "Library | Login";
 
     const [googleUser, setGoogleUser] = useState([]);
-
     const [isAlert, setIsAlert] = useState<boolean>(false);
-
-    const [apiKey, setApiKey] = useState<string>('');
-
-
-    useEffect(() => {
-        getApiKey().then(res => {
-            setApiKey(res.data.apiKey);
-            console.debug(res.data.apiKey);
-        }).catch(err => {
-            console.error(err);
-        })
-    }, [apiKey]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -67,12 +54,19 @@ function Login() {
                 passwordField.value = '';
                 nicknameField.focus()
             } else {
-                sessionStorage.setItem('loggedIn', 'true');
-                sessionStorage.setItem('user', 'true');
-                sessionStorage.setItem('profileName', res.data.response[0].nickname);
-                sessionStorage.setItem('apiKey', apiKey);
+                getApiKey().then(r => {
+                    console.debug(r.data.apiKey);
 
-                window.location.href = '/home';
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('user', 'true');
+                    sessionStorage.setItem('profileName', res.data.response[0].nickname);
+                    sessionStorage.setItem('apiKey', r.data.apiKey);
+
+                    window.location.href = '/home';
+                }).catch(err => {
+                    console.error(err);
+                })
+
             }
         }).catch((err) => {
             console.error(err)
@@ -93,9 +87,13 @@ function Login() {
                         console.debug('google user validation from api', resApi)
 
                         if (resApi.data.response.length !== 0) {
-                            setSessionStorage(res.data.picture, res.data.name, true, false, apiKey)
+                            getApiKey().then(r => {
+                                setSessionStorage(res.data.picture, res.data.name, true, false, r.data.apiKey)
 
-                            window.location.href = '/home';
+                                window.location.href = '/home';
+                            }).catch(err => {
+                                console.error(err);
+                            })
                         } else {
                             console.error('google user validation from api', resApi)
                             setIsAlert(true);

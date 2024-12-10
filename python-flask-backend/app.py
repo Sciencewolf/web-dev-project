@@ -244,17 +244,20 @@ def get_all_users() -> Response:
 
     return make_response(jsonify({'api_error': 'Invalid API key'}), 403)
 
-@app.route("/add-user", methods=['POST'])
+@app.route("/add-user", methods=['GET', 'POST'])
 def add_user() -> Response:
     nickname: str = request.args.get('nickname')
     password: str = request.args.get('password')
+    api_key: str = request.headers.get('x-api-key')
 
-    response: list = account_utils.add_user(nickname, password)
+    if api_key == API_KEY:
+        response: list = account_utils.add_user(nickname, password)
 
-    if response[0] == 'error':
-        return make_response(jsonify({'added': response[0]}), 403)
+        if response[0] == 'error':
+            return make_response(jsonify({'added': response[0]}), 403)
 
-    return make_response(jsonify({'added': response}), 200)
+        return make_response(jsonify({'added': response}), 200)
+
 
 @app.route("/validate-user", methods=['GET', 'POST'])
 def validate_user() -> Response:

@@ -15,17 +15,6 @@ function SignUp() {
     const [isAlert, setIsAlert] = useState<boolean>(false);
     const [googleUser, setGoogleUser] = useState([]);
 
-    const [apiKey, setApiKey] = useState<string>('')
-
-    useEffect(() => {
-        getApiKey().then(res => {
-            setApiKey(res.data.apiKey);
-            console.debug(res.data.apiKey);
-        }).catch(err => {
-            console.error(err);
-        })
-    }, []);
-
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsAlert(false)
@@ -42,16 +31,22 @@ function SignUp() {
             // @ts-expect-error
             getGoogleUserInfo(googleUser.access_token).then((res) => {
                 validateUser(res.data.name).then((r) => {
-                    console.debug(r.data)
 
                     if(r.data.response.length === 0) {
-                        addUser(res.data.name, '').then(() => {
-                            console.debug('res:', res)
 
-                            setSessionStorage(res.data.picture, res.data.name, true, false, apiKey)
+                        getApiKey().then(r => {
+                            sessionStorage.setItem('apiKey', r.data.apiKey);
 
-                            window.location.href = '/home';
+                            addUser(res.data.name, '').then(() => {
+                                setSessionStorage(res.data.picture, res.data.name, true, false, r.data.apiKey);
+
+                                window.location.href = '/home';
+                            }).catch((err) => {
+                                console.error(err);
+                                setIsAlert(true);
+                            })
                         })
+
                     } else {
                         setIsAlert(true);
                     }
@@ -85,24 +80,30 @@ function SignUp() {
         const nicknameField = document.getElementById('nickname') as HTMLInputElement;
         const passwordField = document.getElementById('password') as HTMLInputElement;
 
-        addUser(nicknameField.value, passwordField.value).then((res) => {
-            if(res.data.added[0] === 'error') {
-                nicknameField.value = '';
-                passwordField.value = '';
-                nicknameField.focus();
+        getApiKey().then(r => {
+            sessionStorage.setItem('apiKey', r.data.apiKey);
 
+            addUser(nicknameField.value, passwordField.value).then((res) => {
+                if(res.data.added[0] === 'error') {
+                    nicknameField.value = '';
+                    passwordField.value = '';
+                    nicknameField.focus();
+
+                    setIsAlert(true);
+                } else {
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('user', 'true');
+                    sessionStorage.setItem('profileName', res.data.added[0].nickname);
+
+                    window.location.href = '/home';
+                }
+            }).catch((err) => {
+                console.error(err)
                 setIsAlert(true);
-            } else {
-                sessionStorage.setItem('loggedIn', 'true');
-                sessionStorage.setItem('user', 'true');
-                sessionStorage.setItem('profileName', res.data.added[0].nickname);
+            });
+        })
 
-                window.location.href = '/home';
-            }
-        }).catch((err) => {
-            console.error(err)
-            setIsAlert(true);
-        });
+
     }
 
     return (

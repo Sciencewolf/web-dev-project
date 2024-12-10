@@ -16,7 +16,7 @@ class Account:
         return response.data
 
 
-    def add_user(self, nickname: str, password: str, token: str) -> list:
+    def add_user(self, nickname: str, password: str) -> list:
         user_in_db: list = self.validate_user(nickname)
 
         if user_in_db:

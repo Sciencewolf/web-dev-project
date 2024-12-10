@@ -2,4 +2,4 @@
 
 ## Library project
 
-- <a href="" targer="_blank" >https://hippo-immense-plainly.ngrok-free.app/home</a>
+- <a href="" targer="_blank" >https://tinyurl.com/webdevaron</a>
