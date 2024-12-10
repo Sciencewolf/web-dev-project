@@ -39,6 +39,10 @@ account_utils: Account = Account(supabase_db)
 def index():
     return render_template(template_name_or_list='index.html')
 
+@app.errorhandler(404)
+def load_no_page(error):
+    return render_template(template_name_or_list='index.html'), 404
+
 
 """ Get api_key """
 @app.route("/get-api-key", methods=['GET'])
